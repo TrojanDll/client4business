@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
+import { ApprovalsModule } from './approvals/approvals.module';
 import { AuthGuard } from './auth/auth.guard';
 import { AllExceptionsFilter } from './common/all-exceptions.filter';
 import { createValidationPipe } from './common/validation';
 import { HealthController } from './health/health.controller';
-import { PingController } from './ping.controller';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
@@ -28,8 +28,9 @@ import { PrismaModule } from './prisma/prisma.module';
       }),
     }),
     PrismaModule,
+    ApprovalsModule,
   ],
-  controllers: [HealthController, PingController],
+  controllers: [HealthController],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
