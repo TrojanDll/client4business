@@ -225,6 +225,23 @@ npm run test:e2e  # e2e против реального Postgres
 
 URL тестовой БД переопределяется переменной `TEST_DATABASE_URL` (по умолчанию `postgresql://approval:approval@localhost:15432/approval_test?schema=public`).
 
+## Деплой
+
+Нужен Linux-сервер с Docker (compose plugin входит в современные установки Docker):
+
+```bash
+git clone https://github.com/TrojanDll/client4business.git /opt/approval-service
+cd /opt/approval-service
+
+# .env: сгенерировать пароль БД, открыть клиент на :80
+printf 'POSTGRES_USER=approval\nPOSTGRES_PASSWORD=%s\nPOSTGRES_DB=approval\nCLIENT_PORT=80\nLOG_LEVEL=info\n' "$(openssl rand -hex 16)" > .env
+chmod 600 .env
+
+docker compose up -d --build
+```
+
+Наружу публикуется только клиент (nginx, порт из `CLIENT_PORT`); Postgres и API доступны только внутри compose-сети. Firewall (ufw): разрешить `22/tcp` и `80/tcp`. Обновление: `git pull && docker compose up -d --build`.
+
 ## Структура проекта
 
 ```
