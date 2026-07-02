@@ -8,4 +8,5 @@ coverage/
 .env.*.local
 .DS_Store
 Thumbs.db
+.playwright-mcp/
 Тестовое задание В.pdf
